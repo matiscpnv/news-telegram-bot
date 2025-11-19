@@ -1,6 +1,6 @@
 from flask import Flask
 import requests
-from news import fetch_news
+from news import fetch_news, fetch_kpop_rss, fetch_blackpink_news
 from config import TELEGRAM_TOKEN, CHAT_ID
 
 app = Flask(__name__)
@@ -11,13 +11,16 @@ def home():
 
 @app.route("/send_morning_news")
 def send_morning_news():
-    kpop = fetch_news("kpop idoles comeback")
+
+    kpop = fetch_kpop_rss()
+    blackpink = fetch_blackpink_news()
     tech = fetch_news("technologie innovation")
-    world = fetch_news("monde actualités")
+    world = fetch_news("actualités monde")
 
     message = (
         "📰 *Résumé du jour – 06h40*\n\n"
         "🎤 *K-POP :*\n" + kpop + "\n"
+        "💖 *BLACKPINK :*\n" + blackpink + "\n"
         "💻 *Tech :*\n" + tech + "\n"
         "🌍 *Monde :*\n" + world
     )
